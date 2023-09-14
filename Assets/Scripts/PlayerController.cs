@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private float speed = 10;
     private float xrange = 10;
     public GameObject projectilePrefab;
+    private Vector3 projectileInitialPositioin;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //投げるオブジェクトのコピーが生成されても参照元の高さをプレーヤーの位置に追加する
+        projectileInitialPositioin = new Vector3(transform.position[0], transform.position[1] + projectilePrefab.transform.position.y, transform.position[2]);
+
         horizontalInput = Input.GetAxis("Horizontal");
         transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
         //Playerのx座標を取得して、それが0未満ないし10を超えたらそれぞれ処理をする
@@ -30,7 +34,8 @@ public class PlayerController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Space)){
-            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+
+            Instantiate(projectilePrefab, projectileInitialPositioin, projectilePrefab.transform.rotation);
         }
     }
 }
